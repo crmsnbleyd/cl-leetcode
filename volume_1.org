@@ -1,0 +1,17 @@
+#+title: Common Lisp solutions to problems x to y
+#+author: Arnav Andrew Jose
+
+* 1. Two Sum
+A fairly simple optimised solution (algorithmically, at least. Not sure if idiomatic CL) that uses hash-table.
+Checks if the target is the double of the current number and only returns if another instance of the number exists in the input list.
+
+#+BEGIN_SRC lisp :tangle solutions/two-sum.lisp
+  (defun two-sum (nums target)
+    (let ((hash (make-hash-table)))
+       (loop for x in nums and idx from 0
+	     do (setf (gethash x hash) (cons idx (gethash x hash))))
+       (loop for k being each hash-key of hash
+	     do (when (gethash (- target k) hash)
+		  (unless (and (= target (* k 2)) (not (cdr (gethash k hash))))
+		  (return-from two-sum (car (gethash (- target k) hash))))))))
+#+END_SRC
