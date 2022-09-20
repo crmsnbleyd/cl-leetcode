@@ -1,0 +1,8 @@
+#+title: Common Lisp Leetcode
+#+author: Arnav Andrew Jose
+* What is this repository?
+This repository is intended to be a collection of Common Lisp programs that solve programming problems from [[https://leetcode.com][LeetCode]], a platform with many algorithmic and data structure related problems for developers to solve in order to hone their coding and technical interview skills.
+
+At the time of initialisation <2022-09-27 Tue>, the original author has little to no experience with using Common Lisp, and is using the repository as a way to document new learnings.
+* Contribution
+If you wish to add any new solutions in the established format of this repository (literate org mode file along with tests), make a pull request.
