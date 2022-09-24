@@ -19,10 +19,10 @@
       (setf left2 (if (zerop idx2)
 		      most-negative-fixnum
 		      (aref vec2 (- idx2 1))))
-      (setf right1 (if (zerop idx1)
+      (setf right1 (if (= n1 idx1)
 		      most-positive-fixnum
 		      (aref vec1 idx1)))
-      (setf right2 (if (zerop idx2)
+      (setf right2 (if (= n2 idx2)
 		       most-positive-fixnum
 		       (aref vec2 idx2)))
       (cond
