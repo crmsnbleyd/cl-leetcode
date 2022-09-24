@@ -1,4 +1,4 @@
-#+title: Common Lisp solutions to problems x to y
+#+title: Common Lisp solutions to problems 1 to y
 #+author: Arnav Andrew Jose
 
 * 1. Two Sum
@@ -20,6 +20,24 @@ Checks if the target is the double of the current number and only returns if ano
 * 2. Add Two Numbers
 Lisp already has linked lists, isn't that swell? I would like to do this recursively, but the ANSI standard does not specify Tail Call Optimization, and so I shall search for a LOOP based solution.
 #+BEGIN_SRC lisp :tangle solutions/add-two-numbers.lisp
+  (defun add-numbers (a b)
+    "a and b are linked lists representing
+  two numbers, where every cons cell has
+  a single digit, and the number is
+  reversed."
+    (let
+	((n (min (length a) (length b)))
+	 (carry 0)
+	 (retlist nil))
+      (loop for i from 0 to (1- n)
+	    for x = a then (cdr x)
+	    for y = b then (cdr y)
+	    do
+	       (setf retlist
+		     (cons (mod (+ carry (car a) (car b)) 10) retlist))
+	       (setf carry (max 0 (- (+ carry (car a) (car b)) 10))))
+      )
+    retlist)
 #+END_SRC
 
 * 3. Longest Substring Without Repeating Characters
@@ -75,8 +93,8 @@ Leetcode hard. A binary search problem.
 			most-negative-fixnum
 			(aref vec2 (- idx2 1))))
 	(setf right1 (if (= n1 idx1)
-			most-positive-fixnum
-			(aref vec1 idx1)))
+			 most-positive-fixnum
+			 (aref vec1 idx1)))
 	(setf right2 (if (= n2 idx2)
 			 most-positive-fixnum
 			 (aref vec2 idx2)))
@@ -101,23 +119,35 @@ Leetcode hard. A binary search problem.
 I found out the hard way that 0 is truthy. If :initial-element is not used, the new array is all zeroes.
 #+begin_src lisp :tangle solutions/longest-palindrome.lisp
   (defun longest-palindrome (s)
-  (let* ((n (length s))
-	 (dp (make-array (list n n) :initial-element nil))
-	 (retval 0))
-    (loop for i from 0 to (1- n) do
-      (setf (aref dp i i) t)
-      (unless (= i (1- n))
-	(setf (aref dp i (1+ i))
-	    (if
-	     (char= (char s i) (char s (1+ i)))
-	     t nil))))
-    (loop for i from 0 to (1- n) do
-      (loop for j from i to (1- n) do
-	    (when (or (aref dp i j)
-		   (and
-		    (aref dp (1+ i) (1- j))
-		    (char= (char s i) (char s j))))
-		 (setf (aref dp i j) t)
-		 (setf retval (max retval (1+ (- j i)))))))
-  retval))
+    (let* ((n (length s))
+	   (dp (make-array (list n n) :initial-element nil))
+	   (start 0)
+	   (retval 1))
+      (when (zerop n) (return-from longest-palindrome ""))
+      (loop for i from 0 to (1- n) do
+	(setf (aref dp i i) t)
+	(unless (= i (1- n))
+	  (setf (aref dp i (1+ i))
+		(when
+		    (char= (char s i) (char s (1+ i)))
+		  (setf start i)
+		  (setf retval 2)
+		  t))))
+      (loop with k = 3
+	    while (<= k n)
+	    do
+	       (loop with i = 0
+		     while (< i (1+ (- n k)))
+		     for j = (1- (+ i k))
+		     do
+			(when
+			    (and (aref dp (1+ i) (1- j))
+				 (char= (char s i) (char s j)))
+			  (setf (aref dp i j) t)
+			  (when (> k retval)
+			    (setf start i)
+			    (setf retval k)))
+			(incf i))
+	       (incf k))
+      (subseq s start (+ start retval))))
 #+end_src
