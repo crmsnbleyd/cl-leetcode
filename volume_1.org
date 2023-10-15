@@ -83,30 +83,31 @@ Leetcode hard. A binary search problem.
 	  (left2 nil)
 	  (right1 nil)
 	  (right2 nil))
-      (loop while (<= low high) do
-	(setf idx1 (floor (+ low high) 2))
-	(setf idx2 (- (floor (+ n1 n2 1) 2) idx1))
-	(setf left1 (if (zerop idx1)
-			most-negative-fixnum
-			(aref vec1 (- idx1 1))))
-	(setf left2 (if (zerop idx2)
-			most-negative-fixnum
-			(aref vec2 (- idx2 1))))
-	(setf right1 (if (= n1 idx1)
-			 most-positive-fixnum
-			 (aref vec1 idx1)))
-	(setf right2 (if (= n2 idx2)
-			 most-positive-fixnum
-			 (aref vec2 idx2)))
-	(cond
-	  ((and (<= left1 right2) (<= left2 right1))
-	   (return-from solve
-	     (if (zerop (mod (+ n1 n2) 2))
-		 (/ (+ (max left1 left2) (min right1 right2)) 2)
-		 (max left1 left2)))
-	   (> left1 right2)
-	   (setf high (- idx1 1))
-	   t (setf low (+ idx1 1))))))
+      (loop :while (<= low high)
+	    :do
+	       (setf idx1 (floor (+ low high) 2))
+	       (setf idx2 (- (floor (+ n1 n2 1) 2) idx1))
+	       (setf left1 (if (zerop idx1)
+			       most-negative-fixnum
+			       (aref vec1 (- idx1 1))))
+	       (setf left2 (if (zerop idx2)
+			       most-negative-fixnum
+			       (aref vec2 (- idx2 1))))
+	       (setf right1 (if (= n1 idx1)
+				most-positive-fixnum
+				(aref vec1 idx1)))
+	       (setf right2 (if (= n2 idx2)
+				most-positive-fixnum
+				(aref vec2 idx2)))
+	       (cond
+		 ((and (<= left1 right2) (<= left2 right1))
+		  (return-from solve
+		    (if (zerop (mod (+ n1 n2) 2))
+			(/ (+ (max left1 left2) (min right1 right2)) 2)
+			(max left1 left2)))
+		  (> left1 right2)
+		  (setf high (- idx1 1))
+		  t (setf low (+ idx1 1))))))
     0.0)
 
   (defun find-median (vec1 vec2)
@@ -124,22 +125,23 @@ I found out the hard way that 0 is truthy. If :initial-element is not used, the 
 	   (start 0)
 	   (retval 1))
       (when (zerop n) (return-from longest-palindrome ""))
-      (loop for i from 0 to (1- n) do
-	(setf (aref dp i i) t)
-	(unless (= i (1- n))
-	  (setf (aref dp i (1+ i))
-		(when
-		    (char= (char s i) (char s (1+ i)))
-		  (setf start i)
-		  (setf retval 2)
-		  t))))
-      (loop with k = 3
-	    while (<= k n)
-	    do
-	       (loop with i = 0
-		     while (< i (1+ (- n k)))
-		     for j = (1- (+ i k))
-		     do
+      (loop :for i :from 0 :below n
+	    :do
+	       (setf (aref dp i i) t)
+	       (unless (= i (1- n))
+		 (setf (aref dp i (1+ i))
+		       (when
+			   (char= (char s i) (char s (1+ i)))
+			 (setf start i)
+			 (setf retval 2)
+			 t))))
+      (loop :with k = 3
+	    :while (<= k n)
+	    :do
+	       (loop :with i = 0
+		     :while (< i (1+ (- n k)))
+		     :for j = (1- (+ i k))
+		     :do
 			(when
 			    (and (aref dp (1+ i) (1- j))
 				 (char= (char s i) (char s j)))
