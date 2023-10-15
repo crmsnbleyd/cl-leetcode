@@ -1,4 +1,4 @@
-(defun solve (strinput)
+(defun zigzag (strinput)
   (let ((bucket0 (list))
 	(bucket1 (list))
 	(bucket2 (list))
@@ -19,9 +19,9 @@
 	       ((and (= 2 counter) (eq '+ fn))
 		(setf fn '-)))
 	     (setf counter (funcall fn counter 1)))
-    (solver-join bucket0 bucket1 bucket2)))
+    (reverse-join bucket0 bucket1 bucket2)))
 
-(defun solver-join (&rest lists)
+(defun reverse-join (&rest lists)
   (apply 'concatenate 'string
 	 (map
 	  'list

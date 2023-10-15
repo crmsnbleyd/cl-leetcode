@@ -1,4 +1,4 @@
-(defun solve (vec1 vec2)
+(defun median (vec1 vec2)
   "vec1 is a longer vector than vec2"
   (let ((n1 (length vec1))
 	(n2 (length vec2))
@@ -38,5 +38,5 @@
 
 (defun find-median (vec1 vec2)
   (if (< (length vec1) (length vec2))
-      (solve vec2 vec1)
-      (solve vec1 vec2)))
+      (median vec2 vec1)
+      (median vec1 vec2)))

@@ -71,7 +71,7 @@ I kept running into arcane errors because I was using `do` instead of  `progn`.
 Leetcode hard. A binary search problem.
 
 #+begin_src lisp :tangle solutions/two-median.lisp
-  (defun solve (vec1 vec2)
+  (defun median (vec1 vec2)
     "vec1 is a longer vector than vec2"
     (let ((n1 (length vec1))
 	  (n2 (length vec2))
@@ -111,8 +111,8 @@ Leetcode hard. A binary search problem.
 
   (defun find-median (vec1 vec2)
     (if (< (length vec1) (length vec2))
-	(solve vec2 vec1)
-	(solve vec1 vec2)))
+	(median vec2 vec1)
+	(median vec1 vec2)))
 #+end_src
 
 * 5. Longest Palindrome
@@ -155,7 +155,7 @@ I found out the hard way that 0 is truthy. If :initial-element is not used, the 
 * 6. Zigzag conversion
 Use of ~apply~ and first-class functions. To generalize to ~n~ buckets, you would use an array.
 #+begin_src lisp :tangle solutions/zigzag-conversion.lisp
-(defun solve (strinput)
+(defun zigzag (strinput)
   (let ((bucket0 (list))
 	(bucket1 (list))
 	(bucket2 (list))
@@ -176,9 +176,9 @@ Use of ~apply~ and first-class functions. To generalize to ~n~ buckets, you woul
 	       ((and (= 2 counter) (eq '+ fn))
 		(setf fn '-)))
 	     (setf counter (funcall fn counter 1)))
-    (solver-join bucket0 bucket1 bucket2)))
+    (reverse-join bucket0 bucket1 bucket2)))
 
-(defun solver-join (&rest lists)
+(defun reverse-join (&rest lists)
   (apply 'concatenate 'string
 	 (map
 	  'list
@@ -187,7 +187,7 @@ Use of ~apply~ and first-class functions. To generalize to ~n~ buckets, you woul
 #+end_src
 
 * 7. Reverse Integer
-Use of ~return-from~ and ~finally~ in loop macro.
+Use of ~return-from~ and ~finally~ in loop macro. ~princ-to-string~ is much better to use than ~format nil "~A"~
 #+begin_src lisp :tangle solutions/reverse-integer.lisp
   (defun reverse-integer (input)
     (let ((tentative-result (tentative-solve input)))
