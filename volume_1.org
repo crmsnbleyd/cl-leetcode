@@ -290,7 +290,7 @@ Horrible question
 #+begin_src lisp :tangle solutions/palindrome-number.lisp
   (defun palindrome-number (intinput)
     (if (< intinput 0)
-	(let (s (princ-to-string intinput))
-	  (eq s (reverse s)))
-      nil))
+	nil
+      (let (s (princ-to-string intinput))
+	(eq s (reverse s)))))
 #+end_src
