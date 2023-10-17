@@ -284,3 +284,13 @@ Shows off ~defconstant~, ~read-from-string~, and literal whitespace characters.
 	     :finally
 		(concatenate 'string `(,sign) comparing-to))))))
 #+end_src
+
+* 10. Palindrome number
+Horrible question
+#+begin_src lisp :tangle solutions/palindrome-number.lisp
+  (defun palindrome-number (intinput)
+    (if (< intinput 0)
+	(let (s (princ-to-string intinput))
+	  (eq s (reverse s)))
+      nil))
+#+end_src

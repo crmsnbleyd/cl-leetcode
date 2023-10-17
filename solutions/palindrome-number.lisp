@@ -1,0 +1,5 @@
+(defun palindrome-number (intinput)
+  (if (< intinput 0)
+      (let (s (princ-to-string intinput))
+	(eq s (reverse s)))
+    nil))
