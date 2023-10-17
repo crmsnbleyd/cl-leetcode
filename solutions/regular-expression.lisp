@@ -5,7 +5,7 @@
     ((string= expr "")
      nil)
     ((and (string= s "")
-	  (string= expr ".*"))
+	  (char= (aref expr 1) #\*))
      t)
     ((string= s "")
      nil)
