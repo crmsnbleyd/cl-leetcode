@@ -285,7 +285,7 @@ Shows off ~defconstant~, ~read-from-string~, and literal whitespace characters.
 		(concatenate 'string `(,sign) comparing-to))))))
 #+end_src
 
-* 10. Palindrome number
+* 9. Palindrome number
 Horrible question
 #+begin_src lisp :tangle solutions/palindrome-number.lisp
   (defun palindrome-number (intinput)
