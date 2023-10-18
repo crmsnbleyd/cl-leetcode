@@ -7,7 +7,7 @@
 	      :return nil
 	    :finally (return t))))
 
-(defun integer-to-roman (roman-string)
+(defun roman-to-integer (roman-string)
   (loop :with sum = 0
 	:with str = roman-string
 	:do
