@@ -469,3 +469,37 @@ Using destructuring within the loop macro to great effect.
 	  :when (string= str "")
 	    :return sum))
 #+end_src
+* 14. Longest common prefix
+First use of reduce and also of :always clause in loop macro.
+Always corresponds to something like ~all()~ in python.
+We don't have generators by default in Common Lisp and so
+will have to resort to using the loop macro for all of this stuff.
+#+begin_src lisp :tangle solutions/longest-common-prefix.lisp
+  (defun min-length (strings)
+    (reduce
+     (lambda (a b) (min a (length b)))
+     strings
+     :initial-value most-positive-fixnum))
+
+  (defun longest-common-prefix (strings)
+    (cond
+      ((eq strings nil)
+       nil)
+      ((= (length strings) 1)
+       (car strings))
+      (t
+       (loop
+	 :with res = (min-length strings)
+	 :for end :from (1- res) :downto 0
+	 :for compchar = (char (car strings) end)
+	 :unless
+	 (loop :for str :in strings
+	       :always
+	       (char=
+		(char str end)
+		compchar))
+	 :do (setf res end)
+	 :finally
+	    (return
+	      (subseq (car strings) 0 res))))))
+#+end_src
