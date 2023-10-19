@@ -155,37 +155,30 @@ I found out the hard way that 0 is truthy. If :initial-element is not used, the 
 #+end_src
 
 * 6. Zigzag conversion
-Use of ~apply~ and first-class functions. To generalize to ~n~ buckets, you would use an array.
+Use of circular lists! To generalize to ~n~ buckets, you would use an array.
 #+begin_src lisp :tangle solutions/zigzag-conversion.lisp
-(defun zigzag (strinput)
-  (let ((bucket0 (list))
-	(bucket1 (list))
-	(bucket2 (list))
-	(counter 0)
-	(fn '+))
-    (loop :for c :across strinput
-	  :do
-	     (cond
-	       ((= counter 0)
-		(setf bucket0 (cons c bucket0)))
-	       ((= counter 1)
-		(setf bucket1 (cons c bucket1)))
-	       ((= counter 2)
-		(setf bucket2 (cons c bucket2))))
-	     (cond
-	       ((and (zerop counter) (eq '- fn))
-		(setf fn '+))
-	       ((and (= 2 counter) (eq '+ fn))
-		(setf fn '-)))
-	     (setf counter (funcall fn counter 1)))
-    (reverse-join bucket0 bucket1 bucket2)))
+  (defun zigzag (strinput)
+    (let ((bucket0 (list))
+	  (bucket1 (list))
+	  (bucket2 (list)))
+      (loop :for c :across strinput
+	    :for counter :in '#1=(0 1 2 1 . #1#)
+	    :do
+	       (cond
+		 ((= counter 0)
+		  (setf bucket0 (cons c bucket0)))
+		 ((= counter 1)
+		  (setf bucket1 (cons c bucket1)))
+		 ((= counter 2)
+		  (setf bucket2 (cons c bucket2)))))
+      (reverse-join bucket0 bucket1 bucket2)))
 
-(defun reverse-join (&rest lists)
-  (apply 'concatenate 'string
-	 (map
-	  'list
-	  (lambda (l) (concatenate 'string (reverse l)))
-	  lists)))
+  (defun reverse-join (&rest lists)
+    (apply 'concatenate 'string
+	   (map
+	    'list
+	    (lambda (l) (concatenate 'string (reverse l)))
+	    lists)))
 #+end_src
 
 * 7. Reverse Integer

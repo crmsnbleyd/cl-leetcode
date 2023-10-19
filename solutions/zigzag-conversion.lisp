@@ -1,10 +1,9 @@
 (defun zigzag (strinput)
   (let ((bucket0 (list))
 	(bucket1 (list))
-	(bucket2 (list))
-	(counter 0)
-	(fn '+))
+	(bucket2 (list)))
     (loop :for c :across strinput
+	  :for counter :in '#1=(0 1 2 1 . #1#)
 	  :do
 	     (cond
 	       ((= counter 0)
@@ -12,13 +11,7 @@
 	       ((= counter 1)
 		(setf bucket1 (cons c bucket1)))
 	       ((= counter 2)
-		(setf bucket2 (cons c bucket2))))
-	     (cond
-	       ((and (zerop counter) (eq '- fn))
-		(setf fn '+))
-	       ((and (= 2 counter) (eq '+ fn))
-		(setf fn '-)))
-	     (setf counter (funcall fn counter 1)))
+		(setf bucket2 (cons c bucket2)))))
     (reverse-join bucket0 bucket1 bucket2)))
 
 (defun reverse-join (&rest lists)
