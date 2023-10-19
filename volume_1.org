@@ -370,7 +370,7 @@ in this series
 	  :finally
 	     (return curmax)))
 #+end_src
-* 11 (bonus). Roman to integer
+* 12 (bonus). Roman to integer
 Accidentally implemented this instead of the inverse, so here you go.
 Using destructuring within the loop macro to great effect.
 #+begin_src lisp :tangle solutions/roman-to-integer.lisp
@@ -409,7 +409,7 @@ Using destructuring within the loop macro to great effect.
 	  :when (string= str "")
 	    :return sum))
 #+end_src
-* 11 (bonus). Integer to roman
+* 12. Integer to roman
 If it looks stupid but it works, it's not stupid.
 #+begin_src lisp :tangle solutions/integer-to-roman.lisp
   (defun integer-to-roman (intinput &optional (acc ""))
