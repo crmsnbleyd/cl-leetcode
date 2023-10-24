@@ -10,8 +10,8 @@
 	       :while (char/= (char s curr) (char s i))
 	       :do (remhash (char s curr) seen)
 	       :finally (setf start (1+ curr)))
-	:else :do
-	  (setf (gethash (char s i) seen) t)
+	:else
+	  :do (setf (gethash (char s i) seen) t)
 	:when (> (1+ (- i start)) (length res))
 	   :do (setf res (subseq s start (1+ i)))
 	:finally (return res)))
