@@ -13,6 +13,5 @@ reversed."
 	  do
 	     (setf retlist
 		   (cons (mod (+ carry (car a) (car b)) 10) retlist))
-	     (setf carry (max 0 (- (+ carry (car a) (car b)) 10))))
-    )
+	     (setf carry (max 0 (- (+ carry (car a) (car b)) 10)))))
   retlist)

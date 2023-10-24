@@ -2,9 +2,9 @@
 #+author: Arnav Andrew Jose
 
 * 1. Two Sum
-A fairly simple optimised solution (algorithmically, at least. Not sure if idiomatic CL) that uses hash-table.
-Checks if the target is the double of the current number and only returns if another instance of the number exists in the input list.
-
+A fairly simple optimised solution (algorithmically, at least.Not sure if idiomatic CL)
+that uses hash-table. Checks if the target is the double of the current number and
+only returns if another instance of the number exists in the input list.
 #+BEGIN_SRC lisp :tangle solutions/two-sum.lisp
   (defun two-sum (nums target)
     (let ((hash (make-hash-table))
@@ -35,41 +35,34 @@ Lisp already has linked lists, isn't that swell? I would like to do this recursi
 	    do
 	       (setf retlist
 		     (cons (mod (+ carry (car a) (car b)) 10) retlist))
-	       (setf carry (max 0 (- (+ carry (car a) (car b)) 10))))
-      )
+	       (setf carry (max 0 (- (+ carry (car a) (car b)) 10)))))
     retlist)
 #+END_SRC
 
 * 3. Longest Substring Without Repeating Characters
-A pretty ugly, procedural solution translated directly from one written in Python. This wouldn't fly in Scheme or Clojure.
-I kept running into arcane errors because I was using `do` instead of  `progn`.
-
-#+BEGIN_SRC lisp :tangle solutions/largest-substring.lisp
-  (defun longest-substr (s)
-    (let ((longest 0)
-	  (curr 0)
-	  (start 0)
-	  (seen (make-hash-table))
-	  (len (length s)))
-      (loop for idx from 0 to (- len 1) do
-	(if (gethash (char s idx) seen)
-	    (progn
-	     (setf longest (max longest curr))
-	     (loop while (char/= (char s start) (char s idx)) do
-	       (remhash (char s start) seen)
-	       (incf start))
-	      (incf start)
-	      (setf curr (+ 1 (- idx start))))
-	    (progn
-	     (setf (gethash (char s idx) seen) t)
-	     (incf curr))))
-      (setf longest (max longest curr))
-      longest))
+Earlier [[https://github.com/crmsnbleyd/cl-leetcode/commit/a4ff57de2d306a5dcf32e94fdb5d43b9dca77308#diff-e31b3b3d3d4093a216fd8c5c908b619c6b264aa28867d2b67f74f3b9ce91c031][solution]] was kind of ugly, so here's one with better use of loop keywords.
+#+BEGIN_SRC lisp :tangle solutions/longest-substring.lisp
+  (defun longest-substring (s)
+    (loop :with start = 0
+	  :with res = ""
+	  :with seen = (make-hash-table)
+	  :for i :below (length s)
+	  :if (gethash (char s i) seen)
+	    :do
+	       (loop
+		 :for curr :from start :below i
+		 :while (char/= (char s curr) (char s i))
+		 :do (remhash (char s curr) seen)
+		 :finally (setf start (1+ curr)))
+	  :else :do
+	    (setf (gethash (char s i) seen) t)
+	  :when (> (1+ (- i start)) (length res))
+	     :do (setf res (subseq s start (1+ i)))
+	  :finally (return res)))
 #+END_SRC
 
 * 4. Median of Two Sorted Arrays
 Leetcode hard. A binary search problem.
-
 #+begin_src lisp :tangle solutions/two-median.lisp
   (defun median (vec1 vec2)
     "vec1 is a longer vector than vec2"
